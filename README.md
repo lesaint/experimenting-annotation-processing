@@ -64,3 +64,67 @@ to figure out if given a lot of annotation processors, they will be split in mor
 
 Result : only one round with all source files and all annotation processors
 
+## Experimentations on Annotation Processor options
+
+### annotation-processing-experimentations/experimenting-options
+
+This is a multi-module Maven project composed of two modules.
+
+#### processor-options module
+
+Defines a single Annotation Processor ```OptionAnnotationProcessor```.
+
+This Annotation Processor extends ```AbstractProcessor``` and uses annotations to defines that is supports all annotations and ```SourceVersion.RELEASE_7```.
+
+It *does not* defines any supported options, as, we will see later, this is just useless with ```Javac```.
+
+#### test-options module
+
+Defines a single class ```SomeClass```, annotated with ```@Deprecated``` so that annotation processing actually occurs.
+
+The Maven compiler plugin is configured to display annotation processing logs and to pass several options to the Annotation Processor using the ```-A``` argument of ```Javac```:
+
+```
+-Aoption1 -AOption2=valueOfOption2 -AA -AB= -Acom.acme.Processor.enable
+```
+
+#### observed ```Javac``` behavior
+
+I initially wrote ```OptionAnnotationProcessor``` with a ```@SupportedOptions``` annotation which declared several option names. I intentionally used various case flavours to test case sensitivity. I compiled the project and noticed the ```Map``` returned by ```ProcessingEnvironment#getOptions()``` contained all the values above.
+
+I added extra ones, all there.
+
+I then removed the ```@SupportedOptions``` completely and the content of the ```ProcessingEnvironment#getOptions()``` was still the same.
+
+I ran this test with Java 7 and Java 8, same result.
+
+To make sure the filtering of the options is not disabled when there is only one Annotation Processor, I added another Annotation Processor to the build. ```SecondProcessor``` does declare supporting some specific options. Behavior observed: both Annotation Processor have access to a ```Map``` with the same content: all the options.
+
+```
+Round 1:
+    input files: {fr.javatronic.experiments.annotationprocessing.options.SomeClass}
+    annotations: [java.lang.Deprecated]
+    last round: false
+OptionAnnotationProcessor Supported options=[]
+Options received:
+   option1 -> null
+   Option2 -> valueOfOption2
+   A -> null
+   B -> null
+   com.acme.Processor.enable -> null
+Processor fr.javatronic.experiments.annotationprocessing.options.OptionAnnotationProcessor matches [java.lang.Deprecated] and returns false.
+SecondProcessor Supported options=[com.acme.Processor]
+Options received:
+   option1 -> null
+   Option2 -> valueOfOption2
+   A -> null
+   B -> null
+   com.acme.Processor.enable -> null
+Processor fr.javatronic.experiments.annotationprocessing.options.SecondProcessor matches [java.lang.Deprecated] and returns false.
+Round 2:
+    input files: {}
+    annotations: []
+    last round: true
+```
+
+Conclusion: the value returned by ```Processor#getSupportedOptions``` is simply ignored by ```Javac``` and the ```Map``` returned by ```ProcessingEnvironment#getOptions()``` containes the values of all the ```Javac``` arguments starting with ```-A```.
