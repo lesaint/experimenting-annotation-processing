@@ -23,7 +23,7 @@ This is a single module project that **does not compile**. This is the point of 
 ```sh
 cd [clone of this Git project]/referencing-generated-code/failing-example
 mvn clean install
-````
+```
 
 ## experimentations on annotation processing
 
