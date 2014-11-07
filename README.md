@@ -15,15 +15,6 @@ cd [clone of this Git project]
 mvn clean install
 ```
 
-## referencing-generated-code/failing-example
-
-This is a single module project that **does not compile**. This is the point of this project.
-
-```sh
-cd [clone of this Git project]/referencing-generated-code/failing-example
-mvn clean install
-```
-
 ## experimentations on annotation processing
 
 Located in the ```annotation-processing-experimentations``` subdirectory of the Git Project, this Maven multi-module
