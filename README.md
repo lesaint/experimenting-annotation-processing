@@ -1,5 +1,5 @@
-annotation-processing-explained
-===============================
+Exprimenting with Annotation Processing in Java
+==============================================
 
 This project is about experimenting with annotation processing.
 
