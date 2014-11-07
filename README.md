@@ -4,8 +4,7 @@ annotation-processing-explained
 
 This Maven project is made of a parent POM and several maven projects which references this parent POM.
 
-When importing this project into IntelliJ IDEA, you must do a recursive import from the root directory of this Git project
-or import each sub-project individually as a module.
+When importing this project into IntelliJ IDEA, you must do a recursive import from the root directory of this Git project or import each sub-project individually as a module.
 
 ## parent POM
 
@@ -128,3 +127,60 @@ Round 2:
 ```
 
 Conclusion: the value returned by ```Processor#getSupportedOptions``` is simply ignored by ```Javac``` and the ```Map``` returned by ```ProcessingEnvironment#getOptions()``` containes the values of all the ```Javac``` arguments starting with ```-A```.
+
+## Experimentations on versions
+
+### annotation-processing-experimentations/experimenting-versions
+
+This module is made of two submodules.
+
+* processor-versions: defines a single Annotation Processor: `VersionProcessor`
+  - supports annotation `@Deprecated`
+* test-versions: module compiled with the `VersionProcessor` to test versions
+  - just defines a single class `SomeClass` annotated with `@Deprecated` to trigger annotation processing
+
+Here is how to experiment with versions using these two modules. The following are supposed to be done in sequence. You will need a JDK 1.7 and JDK 1.8 installed.
+
+#### compiling the processor with the declared version
+
+Run `mvn clean install` directly in the `experimenting-versions` directory.
+
+If you're are compiling with a Java 1.7 JDK, compilation will be ok as `VersionProcessor` declares supported `SourceVersion.RELEASE_7`.
+
+#### compiling the processor with a more recent version
+
+Modify `VersionProcessor` to support `SourceVersion.RELEASE_6` and recompile using JDK 1.7.
+
+Build is also ok as Java is fully backward compatible.
+
+#### compiling the processor with an older version
+
+Change it to `SourceVersion.RELEASE_8`.
+
+You get a compilation error because value `RELEASE_8` does not exist in enum `SourceVersion` in JDK 1.7.
+
+```
+annotation-processing-experimentations/experimenting-versions/processor-versions/src/main/java/fr/javatronic/experiments/annotationprocessing/versions/VersionProcessor.java:[17,38] cannot find symbol
+```
+
+Change your `JAVA_HOME` to point to a Java 8 JDK and recompile.
+
+It works (of course!).
+
+#### compiling source with a processor declaring a more recent version
+
+Change your `JAVA_HOME` back to JDK 1.7 and compile only the `test-versions` module.
+
+You are going to compile a module with Java 1.7 using an Annotation Processor `VersionProcessor` compile using Java 1.8 and declaring supporting `SourceVersion.RELEASE_8`.
+
+You get another compilation error!
+
+```
+Fatal error compiling: java.lang.EnumConstantNotPresentException: javax.lang.model.SourceVersion.RELEASE_8
+```
+
+Here we can really wonder what is the point of declaring a suppported version:
+
+* declare a lower version that the one used to compile, it works anyway since Java is backward compatible
+* declare a higher version the the one used to compile, the compilation will fail because the version is indicated via an enum value, which can not exist in the current of Java since it is older.
+

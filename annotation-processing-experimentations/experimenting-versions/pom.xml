@@ -5,19 +5,17 @@
 
   <parent>
     <groupId>fr.javatronic.damapping.annotation-processing-explained</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>annotation-processing-experimentations</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>annotation-processing-experimentations</artifactId>
+  <artifactId>experimenting-versions</artifactId>
   <packaging>pom</packaging>
 
   <modules>
-    <module>processor</module>
-    <module>massive-count-of-annotated-classes</module>
-    <module>massive-count-of-annotation-processors</module>
-    <module>experimenting-options</module>
-    <module>experimenting-versions</module>
+    <module>processor-versions</module>
+    <module>test-versions</module>
   </modules>
+
 
 </project>
