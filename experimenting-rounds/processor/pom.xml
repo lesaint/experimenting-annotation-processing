@@ -4,12 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>fr.javatronic.damapping.annotation-processing-explained</groupId>
-    <artifactId>experimenting-versions</artifactId>
+    <groupId>fr.javatronic.damapping.annotationprocessing</groupId>
+    <artifactId>experimenting-rounds</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>processor-versions</artifactId>
+  <artifactId>processor</artifactId>
   <packaging>jar</packaging>
 
   <build>

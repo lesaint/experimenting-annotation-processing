@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>fr.javatronic.damapping.annotation-processing-explained</groupId>
-  <artifactId>parent</artifactId>
+  <groupId>fr.javatronic.damapping.annotationprocessing</groupId>
+  <artifactId>experimenting</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -12,6 +12,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
+
+  <modules>
+    <module>experimenting-rounds</module>
+    <module>experimenting-options</module>
+    <module>experimenting-versions</module>
+  </modules>
 
   <dependencyManagement>
     <dependencies>

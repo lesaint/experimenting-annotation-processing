@@ -4,17 +4,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>fr.javatronic.damapping.annotation-processing-explained</groupId>
-    <artifactId>annotation-processing-experimentations</artifactId>
+    <groupId>fr.javatronic.damapping.annotationprocessing</groupId>
+    <artifactId>experimenting-rounds</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>massive-count-of-annotated-classes</artifactId>
+  <artifactId>massive-count-of-annotation-processors</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
-      <groupId>fr.javatronic.damapping.annotation-processing-explained</groupId>
+      <groupId>fr.javatronic.damapping.annotationprocessing</groupId>
       <artifactId>processor</artifactId>
       <version>${project.version}</version>
     </dependency>

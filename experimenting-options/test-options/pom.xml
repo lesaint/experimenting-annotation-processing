@@ -4,18 +4,18 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>fr.javatronic.damapping.annotation-processing-explained</groupId>
-    <artifactId>experimenting-versions</artifactId>
+    <groupId>fr.javatronic.damapping.annotationprocessing</groupId>
+    <artifactId>experimenting-options</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>test-versions</artifactId>
+  <artifactId>test-options</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
-      <groupId>fr.javatronic.damapping.annotation-processing-explained</groupId>
-      <artifactId>processor-versions</artifactId>
+      <groupId>fr.javatronic.damapping.annotationprocessing</groupId>
+      <artifactId>processor-options</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
@@ -26,13 +26,18 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.7</source>
+          <target>1.7</target>
           <compilerArgs>
             <!--option non standard qui permet d'afficher des informations sur le traitement des annotations par les processeurs-->
             <compilerArg>-XprintRounds</compilerArg>
             <!--option non standard qui affiche la liste des annotations qui seront traitées par les processeurs d'annotations-->
             <compilerArg>-XprintProcessorInfo</compilerArg>
+            <compilerArg>-Aoption1</compilerArg>
+            <compilerArg>-AOption2=valueOfOption2</compilerArg>
+            <compilerArg>-AA</compilerArg>
+            <compilerArg>-AB=</compilerArg>
+            <compilerArg>-Acom.acme.Processor.enable</compilerArg>
           </compilerArgs>
         </configuration>
       </plugin>
