@@ -17,6 +17,7 @@
     <module>experimenting-rounds</module>
     <module>experimenting-options</module>
     <module>experimenting-versions</module>
+    <module>experimenting-locale</module>
   </modules>
 
   <dependencyManagement>

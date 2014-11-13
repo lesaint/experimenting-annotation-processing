@@ -169,3 +169,37 @@ Here we can really wonder what is the point of declaring a suppported version:
 * declare a lower version that the one used to compile, it works anyway since Java is backward compatible
 * declare a higher version the the one used to compile, the compilation will fail because the version is indicated via an enum value, which can not exist in the current of Java since it is older.
 
+# Experimentation Locale
+
+## annotation-processing-experimentations/experimenting-locale
+
+This module is made of two submodules.
+
+* processor-locale: defines a single Annotation Processor: `LocaleProcessor`
+  - supports annotation `@Deprecated`
+* test-locale: module compiled with the `LocaleProcessor` to test value returned by `ProcessingEnvironment#getLocale()`
+  - just defines a single class `SomeClass` annotated with `@Deprecated` to trigger annotation processing
+
+Compile the `experimenting-locale` and look for the line starting with `getLocale()=`: `mvn clean compile | grep "getLocale()="`
+
+The locale you will see should be the default locale of your system.
+
+## explaination
+
+### Javac locale
+
+By default, `Javac` picks up the current language and country from the environnent and the `getLocale` method will return the corresponding `Locale` value.
+
+The default language and country can be override in `Javac` with the `-J-Duser.language` and `-J-Duser.country` command line arguments (e.g. `-J-Duser.language=fr -J-Duser.country=FR`).
+
+### Javac locale with Maven
+
+Unless the `Javac` process is forked, `-J` command line arguments can not be specified directly in the configuration of the `maven-compiler-plugin`. The reason is that Maven is running `javac` through the internal javac API of its own Java process and this does not accept `-J` arguments (obviously, it is not possible to modify an already existing `Java` process).
+
+To change `javac` locale, one need to change the locale of the Java process of Maven, you can either use the `-D` arguments of the `mvn` command (e.g. `mvn clean install -Duser.language=fr -Duser.country=FR`) or change the language environment variable of your system (e.g. on linux `LANG=fr_FR.UTF-8 mvn clean install`).
+
+The problem with forking the `javac` process is that its logs won't be visible at all in the console. Here, this is hardly something we want to do.
+
+## experiment for yourself
+
+In conclusion, to experiment with the value of the locale, you can specify `user.language` and `user.country` command line arguments: `mvn clean compile -Duser.language=fr -Duser.country=FR`.
